@@ -29,20 +29,19 @@ public class ComentarioService {
         return comentarioRepository.save(comentario);
     }
 
-    public Comentario atualizarComentario(Long id, Comentario novoComentario) {
+    public Comentario atualizar(Long id, Comentario novoComentario) {
         Optional<Comentario> optionalComentario = comentarioRepository.findById(id);
         if (optionalComentario.isPresent()) {
-            Comentario comentario = optionalComentario.get();
-            comentario.setConteudo(novoComentario.getConteudo());
-            return (Comentario) comentarioRepository.save(comentario);
+            novoComentario.setId(id);
+            return (Comentario) comentarioRepository.save(novoComentario);
         } else {
             // Exception
             return null;
         }
     }
 
-    public List<Comentario> delete(){
-        List<Comentario> comentario = comentarioRepository.deleteById(id);
-        return comentario;
+    public void delete(Long id){
+        comentarioRepository.deleteById(id);
     }
+
 }
