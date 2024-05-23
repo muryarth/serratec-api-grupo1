@@ -15,7 +15,6 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id_usuario")
-    @NotBlank(message = MensagensValidator.NOT_BLANK)
     private long id_usuario;
 
     @Column(name= "nome_usuario")

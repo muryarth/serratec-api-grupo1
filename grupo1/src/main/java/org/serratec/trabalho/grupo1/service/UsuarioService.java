@@ -30,13 +30,39 @@ public class UsuarioService {
 		 return usuarioDTO;
     }
     
-    
-    public Usuario findById(Long id) throws NotFoundException {
+    public UsuarioDTO findById(Long id) throws NotFoundException {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
         if (usuarioOpt.isEmpty()) {
             throw new NotFoundException();
         }
-        return usuarioOpt.get();
+        return new UsuarioDTO(usuarioOpt.get());
     }
-
+    
+    public UsuarioDTO create(Usuario usuario){
+        usuarioRepository.save(usuario);
+        return new UsuarioDTO(usuario);
+    }
+  
+    
+    public UsuarioDTO alterar(Long id,  Usuario novoUsuario) {
+    	Optional<Usuario> usuOPT= usuarioRepository.findById(id);
+    	if(!usuOPT.isPresent()) {
+    		throw new NotFoundException();
+    	}
+    	novoUsuario.setId_usuario(id);
+    	return new UsuarioDTO(usuarioRepository.save(novoUsuario));
+    }
+    
+    
+    public void deletar(Long id) throws NotFoundException {
+    	Optional<Usuario> usuOPT= usuarioRepository.findById(id);
+    	if(!usuOPT.isPresent()) {
+    		throw new NotFoundException();
+    	}
+    	usuarioRepository.deleteById(id);	
+    }
+    
+    
+    
+    
 }
