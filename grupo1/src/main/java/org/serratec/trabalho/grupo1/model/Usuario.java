@@ -41,56 +41,55 @@ public class Usuario {
     @Column(name= "nascimento_usuario")
     private Date dataNascimento;
 
-    @NotBlank(message = MensagensValidator.NOT_BLANK)
     public long getId_usuario() {
-        return id_usuario;
-    }
+		return id_usuario;
+	}
 
-    public void setId_usuario(@NotBlank(message = MensagensValidator.NOT_BLANK) long id_usuario) {
-        this.id_usuario = id_usuario;
-    }
+	public void setId_usuario(long id_usuario) {
+		this.id_usuario = id_usuario;
+	}
 
-    public @Size(max = 40, message = MensagensValidator.INVALID_SIZE) @NotBlank(message = MensagensValidator.NOT_BLANK) String getNome() {
-        return nome;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public void setNome(@Size(max = 40, message = MensagensValidator.INVALID_SIZE) @NotBlank(message = MensagensValidator.NOT_BLANK) String nome) {
-        this.nome = nome;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public @Size(max = 40, message = MensagensValidator.INVALID_SIZE) @NotBlank(message = MensagensValidator.NOT_BLANK) String getSobrenome() {
-        return sobrenome;
-    }
+	public String getSobrenome() {
+		return sobrenome;
+	}
 
-    public void setSobrenome(@Size(max = 40, message = MensagensValidator.INVALID_SIZE) @NotBlank(message = MensagensValidator.NOT_BLANK) String sobrenome) {
-        this.sobrenome = sobrenome;
-    }
+	public void setSobrenome(String sobrenome) {
+		this.sobrenome = sobrenome;
+	}
 
-    public @Size(max = 40, message = MensagensValidator.INVALID_SIZE) @NotBlank(message = MensagensValidator.NOT_BLANK) String getEmail() {
-        return email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setEmail(@Size(max = 40, message = MensagensValidator.INVALID_SIZE) @NotBlank(message = MensagensValidator.NOT_BLANK) String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public @Size(max = 40, message = MensagensValidator.INVALID_SIZE) @NotBlank(message = MensagensValidator.NOT_BLANK) String getSenha() {
-        return senha;
-    }
+	public String getSenha() {
+		return senha;
+	}
 
-    public void setSenha(@Size(max = 40, message = MensagensValidator.INVALID_SIZE) @NotBlank(message = MensagensValidator.NOT_BLANK) String senha) {
-        this.senha = senha;
-    }
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 
-    public Date getDataNascimento() {
-        return dataNascimento;
-    }
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
 
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
 
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -1,5 +1,6 @@
 package org.serratec.trabalho.grupo1.controller;
 
+import org.serratec.trabalho.grupo1.dto.UsuarioDTO;
 import org.serratec.trabalho.grupo1.model.Usuario;
 import org.serratec.trabalho.grupo1.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 	
 	@GetMapping
-	public ResponseEntity<List<Usuario>> listar(){
-		return ResponseEntity.ok(usuarioService.findall());
+	public ResponseEntity<List<UsuarioDTO>> listar(){
+		return ResponseEntity.ok(usuarioService.findAll());
 	}
 	
 	@GetMapping("/{id}")
