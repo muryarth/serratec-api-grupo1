@@ -1,5 +1,6 @@
 package org.serratec.trabalho.grupo1.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,6 +24,7 @@ public class Publicacao {
     private String conteudo;
 
     @NotNull(message = MensagensValidator.NOT_NULL)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @Column(name = "data_criacao", nullable = false)
     private Date dataCriacao;
 
@@ -30,7 +32,7 @@ public class Publicacao {
         super();
     }
 
-    public Publicacao(Long id, String conteudo, String dataCriacao) {
+    public Publicacao(Long id, String conteudo, Date dataCriacao) {
         super();
         this.id = id;
         this.conteudo = conteudo;
@@ -53,11 +55,11 @@ public class Publicacao {
         this.conteudo = conteudo;
     }
 
-    public @NotNull(message = MensagensValidator.NOT_NULL) String getDataCriacao() {
+    public @NotNull(message = MensagensValidator.NOT_NULL) Date getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(@NotNull(message = MensagensValidator.NOT_NULL) String dataCriacao) {
+    public void setDataCriacao(@NotNull(message = MensagensValidator.NOT_NULL) Date dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
