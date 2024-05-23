@@ -15,21 +15,21 @@ public class ComentarioService {
     @Autowired
     private ComentarioRepository comentarioRepository;
 
-    public List<Comentario> findAll () {
+    public List<Comentario> listar () {
         List<Comentario> comentarios = comentarioRepository.findAll();
         return comentarios;
     }
 
-    public Comentario buscar(Long id) {
+    public Comentario buscar(@PathVariable Long id) {
         Optional<Comentario> comentarioOpt = comentarioRepository.findById(id);
         return comentarioOpt.get();
     }
 
-    public Object inserir(Comentario comentario) {
+    public Comentario inserir(Comentario comentario) {
         return comentarioRepository.save(comentario);
     }
 
-    public Comentario atualizar(Long id, Comentario novoComentario) {
+    public Comentario atualizar(@PathVariable Long id, Comentario novoComentario) {
         Optional<Comentario> optionalComentario = comentarioRepository.findById(id);
         if (optionalComentario.isPresent()) {
             novoComentario.setId(id);
@@ -40,8 +40,9 @@ public class ComentarioService {
         }
     }
 
-    public void delete(Long id){
+    public Comentario delete(Long id){
         comentarioRepository.deleteById(id);
+        return null;
     }
 
 }
