@@ -15,7 +15,7 @@ public class RelacaoService {
     @Autowired
     private RelacaoRepository relacaoRepository;
 
-    public List<Relacao> findAll () {
+    public List<Relacao> listar () {
         List<Relacao> relacao = relacaoRepository.findAll();
         return relacao;
     }
@@ -23,10 +23,6 @@ public class RelacaoService {
     public Relacao buscar(Long id) {
         Optional<Relacao> relacaoOpt = relacaoRepository.findById(id);
         return relacaoOpt.get();
-    }
-
-    public Object inserir(Relacao relacao) {
-        return relacaoRepository.save(relacao);
     }
 
     public Relacao atualizar(Long id, Relacao novaRelacao) {
@@ -40,8 +36,11 @@ public class RelacaoService {
         }
     }
 
-    public void delete(Long id){
+    public Relacao delete(Long id){
         relacaoRepository.deleteById(id);
+        return null;
+
+
     }
 
 }

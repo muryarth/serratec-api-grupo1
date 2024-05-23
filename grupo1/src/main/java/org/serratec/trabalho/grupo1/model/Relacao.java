@@ -2,6 +2,8 @@ package org.serratec.trabalho.grupo1.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 
 import java.util.Date;
 @Entity
@@ -10,9 +12,9 @@ public class Relacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id_relacao")
-    @NotBlank(message="A relacao não pode ser vazia ou nula")
     private Long id;
 
+    @NotNull(message = MensagensValidator.NOT_NULL)
     @Column(name= "date_relacao")
     private Date dataInicioSeguimento;
 
