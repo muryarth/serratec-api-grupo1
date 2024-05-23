@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 
+import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -26,13 +28,13 @@ public class Publicacao {
     @NotNull(message = MensagensValidator.NOT_NULL)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @Column(name = "data_criacao", nullable = false)
-    private Date dataCriacao;
+    private LocalDate dataCriacao;
 
     public Publicacao() {
         super();
     }
 
-    public Publicacao(Long id, String conteudo, Date dataCriacao) {
+    public Publicacao(Long id, String conteudo, LocalDate dataCriacao) {
         super();
         this.id = id;
         this.conteudo = conteudo;
@@ -55,11 +57,11 @@ public class Publicacao {
         this.conteudo = conteudo;
     }
 
-    public @NotNull(message = MensagensValidator.NOT_NULL) Date getDataCriacao() {
+    public @NotNull(message = MensagensValidator.NOT_NULL) LocalDate getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(@NotNull(message = MensagensValidator.NOT_NULL) Date dataCriacao) {
+    public void setDataCriacao(@NotNull(message = MensagensValidator.NOT_NULL) LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
