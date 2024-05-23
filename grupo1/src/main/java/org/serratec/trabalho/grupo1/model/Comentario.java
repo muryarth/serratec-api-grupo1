@@ -25,7 +25,7 @@ public class Comentario {
     private String texto;
 
     @NotNull(message = MensagensValidator.NOT_NULL)
-    @Column(name = "dataCriacao")
+    @Column(name = "data_criacao")
     private Date dataCriacao;
 
     public Comentario() {
