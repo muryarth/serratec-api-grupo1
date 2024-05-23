@@ -1,11 +1,14 @@
 package org.serratec.trabalho.grupo1.controller;
 
+import jakarta.validation.Valid;
 import org.serratec.trabalho.grupo1.dto.PublicacaoDTO;
 import org.serratec.trabalho.grupo1.model.Publicacao;
 import org.serratec.trabalho.grupo1.service.PublicacaoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,10 +34,28 @@ public class PublicacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<PublicacaoDTO> create(@RequestBody Publicacao publicacao) {
+    public ResponseEntity<PublicacaoDTO> create(@Valid @RequestBody Publicacao publicacao) {
         PublicacaoDTO publicacaoDTO = publicacaoService.create(publicacao);
 
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(publicacaoDTO.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(publicacaoDTO);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PublicacaoDTO> update(@PathVariable Long id, @Valid @RequestBody Publicacao novaPublicacao) {
+        PublicacaoDTO publicacaoDTO = publicacaoService.findAndUpdate(id, novaPublicacao);
         return ResponseEntity.ok(publicacaoDTO);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        publicacaoService.findAndDelete(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

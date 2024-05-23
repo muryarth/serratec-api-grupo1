@@ -21,7 +21,7 @@ public class Publicacao {
     private Long id;
 
     @NotBlank(message = MensagensValidator.NOT_BLANK)
-    @Size(message = MensagensValidator.INVALID_SIZE)
+    @Size(message = MensagensValidator.INVALID_MAX_SIZE)
     @Column(name = "conteudo", nullable = false, length = 255)
     private String conteudo;
 

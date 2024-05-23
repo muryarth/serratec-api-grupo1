@@ -52,4 +52,22 @@ public class PublicacaoService {
 
     }
 
+    public PublicacaoDTO findAndUpdate(Long id, Publicacao novaPublicacao){
+        Optional<Publicacao> publicacaoOpt = publicacaoRepository.findById(id);
+
+        if(publicacaoOpt.isPresent()){
+            novaPublicacao.setId(publicacaoOpt.get().getId());
+            return new PublicacaoDTO(publicacaoRepository.save(novaPublicacao));
+        }
+
+        throw new NotFoundException();
+    }
+
+    public void findAndDelete(Long id) {
+        Optional<Publicacao> publicacaoOpt = publicacaoRepository.findById(id);
+
+        if (publicacaoOpt.isEmpty()) {
+            throw new NotFoundException();
+        }
+    }
 }
