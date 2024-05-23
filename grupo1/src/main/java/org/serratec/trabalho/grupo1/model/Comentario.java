@@ -1,6 +1,10 @@
 package org.serratec.trabalho.grupo1.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 
 import java.util.Date;
 import java.util.Objects;
@@ -8,15 +12,20 @@ import java.util.Objects;
 @Entity
 public class Comentario {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_comentario")
     private Long id;
 
-    @Column
+    @NotBlank(message = MensagensValidator.NOT_BLANK)
+    @Size(max = 200 ,message = MensagensValidator.INVALID_SIZE)
+    @Column(name = "texto", length = 200, nullable = false)
     private String texto;
 
-    @Column
+    @NotNull(message = MensagensValidator.NOT_NULL)
+    @Column(name = "dataCriacao")
     private Date dataCriacao;
 
     public Comentario() {
