@@ -28,8 +28,7 @@ public class PublicacaoService {
             PublicacaoDTO publiDTO = new PublicacaoDTO(publicacao);
             publicacoesDTO.add(publiDTO);
         }
-
-        // List<PublicacaoDTO> publicacoesDTO = publicacoes.stream().map(PublicacaoDTO::new).toList();
+        
 
         return publicacoesDTO;
     }
@@ -55,19 +54,21 @@ public class PublicacaoService {
     public PublicacaoDTO findAndUpdate(Long id, Publicacao novaPublicacao){
         Optional<Publicacao> publicacaoOpt = publicacaoRepository.findById(id);
 
-        if(publicacaoOpt.isPresent()){
-            novaPublicacao.setId(publicacaoOpt.get().getId());
-            return new PublicacaoDTO(publicacaoRepository.save(novaPublicacao));
+        if (publicacaoOpt.isPresent()) {
+            Publicacao publicacao = publicacaoOpt.get();
+            publicacao.setConteudo(novaPublicacao.getConteudo());
+            publicacao.setDataCriacao(novaPublicacao.getDataCriacao());
+            Publicacao updatedPublicacao = publicacaoRepository.save(publicacao);
+            return new PublicacaoDTO(updatedPublicacao);
         }
 
         throw new NotFoundException();
     }
 
     public void findAndDelete(Long id) {
-        Optional<Publicacao> publicacaoOpt = publicacaoRepository.findById(id);
-
-        if (publicacaoOpt.isEmpty()) {
+        if (!publicacaoRepository.existsById(id)) {
             throw new NotFoundException();
         }
+        publicacaoRepository.deleteById(id);
     }
 }

@@ -17,7 +17,7 @@ public class PublicacaoController {
 
     private final PublicacaoService publicacaoService;
 
-    private PublicacaoController(PublicacaoService publicacaoService) {
+    public PublicacaoController(PublicacaoService publicacaoService) {
         this.publicacaoService = publicacaoService;
     }
 

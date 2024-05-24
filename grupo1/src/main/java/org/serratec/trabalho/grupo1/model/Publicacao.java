@@ -7,9 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 
-import java.lang.reflect.Type;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -21,7 +19,7 @@ public class Publicacao {
     private Long id;
 
     @NotBlank(message = MensagensValidator.NOT_BLANK)
-    @Size(message = MensagensValidator.INVALID_MAX_SIZE)
+    @Size(max = 255, message = MensagensValidator.INVALID_MAX_SIZE)
     @Column(name = "conteudo", nullable = false, length = 255)
     private String conteudo;
 
@@ -49,11 +47,11 @@ public class Publicacao {
         this.id = id;
     }
 
-    public @NotBlank(message = MensagensValidator.NOT_BLANK) @Size(message = MensagensValidator.INVALID_SIZE) String getConteudo() {
+    public @NotBlank(message = MensagensValidator.NOT_BLANK) @Size(max = 255, message = MensagensValidator.INVALID_MAX_SIZE) String getConteudo() {
         return conteudo;
     }
 
-    public void setConteudo(@NotBlank(message = MensagensValidator.NOT_BLANK) @Size(message = MensagensValidator.INVALID_SIZE) String conteudo) {
+    public void setConteudo(@NotBlank(message = MensagensValidator.NOT_BLANK) @Size(max = 255, message = MensagensValidator.INVALID_MAX_SIZE) String conteudo) {
         this.conteudo = conteudo;
     }
 

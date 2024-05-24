@@ -3,7 +3,6 @@ package org.serratec.trabalho.grupo1.dto;
 import org.serratec.trabalho.grupo1.model.Publicacao;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class PublicacaoDTO {
 
