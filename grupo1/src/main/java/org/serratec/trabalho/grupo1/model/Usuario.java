@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 
 import jakarta.persistence.CascadeType;
@@ -25,7 +26,7 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id_usuario")
-    private long id_usuario;
+    private long id;
 
     @Column(name= "nome_usuario")
     @Size(max = 40, message = MensagensValidator.INVALID_SIZE)
@@ -47,7 +48,8 @@ public class Usuario {
     @NotBlank(message = MensagensValidator.NOT_BLANK)
     private String senha;
 
-    @Column(name= "nascimento_usuario")
+    @Column(name= "data_nascimento_usuario")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date dataNascimento;
     
     @OneToMany(mappedBy = "id.seguidor", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -57,11 +59,11 @@ public class Usuario {
     private Set<Relacao> seguidores = new HashSet<>();
 
     public long getId() {
-		return id_usuario;
+		return id;
 	}
 
 	public void setId(long id_usuario) {
-		this.id_usuario = id_usuario;
+		this.id = id_usuario;
 	}
 
 	public String getNome() {
@@ -125,11 +127,11 @@ public class Usuario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return id_usuario == usuario.id_usuario;
+        return id == usuario.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id_usuario);
+        return Objects.hashCode(id);
     }
 }

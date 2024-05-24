@@ -22,6 +22,8 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+
+	/* Operações básicas do próprio Usuário */
 	
 	@GetMapping
 	public ResponseEntity<List<UsuarioDTO>> listar(){

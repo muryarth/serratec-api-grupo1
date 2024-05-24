@@ -66,6 +66,8 @@ public class UsuarioService {
     	}
     	usuarioRepository.deleteById(id);	
     }
+
+    /* Referente à relações */
     
     public List<RelacaoDTO> findAllFollowersById(Long id) throws NotFoundException, NoContentException {
 

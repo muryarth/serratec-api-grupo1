@@ -3,6 +3,7 @@ package org.serratec.trabalho.grupo1.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.serratec.trabalho.grupo1.dto.UsuarioDTO;
 
@@ -14,6 +15,7 @@ public class Relacao {
     private RelacaoPK id = new RelacaoPK();
 
     @Column(name = "data_realizacao")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate dataRealizacao;
 
     public Relacao() {
