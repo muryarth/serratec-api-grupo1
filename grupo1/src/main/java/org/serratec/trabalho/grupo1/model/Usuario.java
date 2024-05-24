@@ -50,17 +50,17 @@ public class Usuario {
     @Column(name= "nascimento_usuario")
     private Date dataNascimento;
     
-    @OneToMany(mappedBy = "seguidor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "id.seguidor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Relacao> seguindo = new HashSet<>();
 
-    @OneToMany(mappedBy = "seguido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "id.seguido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Relacao> seguidores = new HashSet<>();
 
-    public long getId_usuario() {
+    public long getId() {
 		return id_usuario;
 	}
 
-	public void setId_usuario(long id_usuario) {
+	public void setId(long id_usuario) {
 		this.id_usuario = id_usuario;
 	}
 
