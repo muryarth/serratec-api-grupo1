@@ -1,5 +1,7 @@
 package org.serratec.trabalho.grupo1.model;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -7,6 +9,10 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,11 +25,15 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+
+
 @Entity
 @Table(name="usuario")
-public class Usuario {
+public class Usuario implements UserDetails, Serializable {
 
-    @Id
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id_usuario")
     private long id;
@@ -134,4 +144,39 @@ public class Usuario {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		return senha;
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }
