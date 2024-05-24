@@ -15,5 +15,5 @@ public interface RelacaoRepository extends JpaRepository<Relacao, Long> {
     List<Relacao> findAllFollowersByUserId(Long id);
 
     @Query(value = "select r from relacao r where r.seguidor_id = :id", nativeQuery=true)
-    List<Relacao> findAllFollowingByUserId(Long id);
+    List<Relacao> findAllFollowingById(Long id);
 }

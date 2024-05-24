@@ -67,7 +67,7 @@ public class UsuarioService {
     	usuarioRepository.deleteById(id);	
     }
     
-    public List<RelacaoDTO> findFollowersById(Long id) throws NotFoundException, NoContentException {
+    public List<RelacaoDTO> findAllFollowersById(Long id) throws NotFoundException, NoContentException {
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 
@@ -89,6 +89,27 @@ public class UsuarioService {
 
         throw new NotFoundException();
     }
-    
-    
+
+    public List<RelacaoDTO> findAllFollowingById(Long id) throws NotFoundException, NoContentException {
+
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+
+        if(usuarioOpt.isPresent()){
+            List<Relacao> relacoes = relacaoRepository.findAllFollowingById(id);
+            List<RelacaoDTO> relacoesDTO = new ArrayList<>();
+
+            for(Relacao relacao : relacoes){
+                RelacaoDTO relacaoDTO = new RelacaoDTO(relacao);
+                relacoesDTO.add(relacaoDTO);
+            }
+
+            if(!relacoesDTO.isEmpty()){
+                return relacoesDTO;
+            }
+
+            throw new NoContentException();
+        }
+
+        throw new NotFoundException();
+    }
 }

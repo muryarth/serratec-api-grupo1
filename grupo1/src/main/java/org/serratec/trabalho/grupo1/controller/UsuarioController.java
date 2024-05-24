@@ -56,10 +56,15 @@ public class UsuarioController {
 		return ResponseEntity.noContent().build();
 	}
 
+	/* Operações na tabela de Relações */
+
 	@GetMapping("/{id}/relacoes/seguidores")
-	public ResponseEntity<List<RelacaoDTO>> listarSeguidores(@PathVariable Long id){
-		return ResponseEntity.ok(usuarioService.findFollowersById(id));
+	public ResponseEntity<List<RelacaoDTO>> listarTodosSeguidores(@PathVariable Long id){
+		return ResponseEntity.ok(usuarioService.findAllFollowersById(id));
 	}
 
-	// @GetMapping("/{id}/relacoes/seguindo")
+	@GetMapping("/{id}/relacoes/seguindo")
+	public ResponseEntity<List<RelacaoDTO>> listarTodosSeguindo(@PathVariable Long id){
+		return ResponseEntity.ok(usuarioService.findAllFollowingById(id));
+	}
 }
