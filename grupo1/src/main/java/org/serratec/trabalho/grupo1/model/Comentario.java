@@ -1,13 +1,18 @@
 package org.serratec.trabalho.grupo1.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.Objects;
+
+import org.serratec.trabalho.grupo1.exception.MensagensValidator;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.serratec.trabalho.grupo1.exception.MensagensValidator;
-
-import java.util.Date;
-import java.util.Objects;
 
 @Entity
 public class Comentario {
@@ -25,12 +30,16 @@ public class Comentario {
     private String texto;
 
     @NotNull(message = MensagensValidator.NOT_NULL)
-    @Column(name = "data_criacao")
-    private Date dataCriacao;
+    @Column(name = "data_criacao", nullable = false)
+    private LocalDate dataCriacao;
 
+
+    //Construtor padrao para JPA.
     public Comentario() {
+        // Construtor vazio
     }
 
+    
     public Long getId() {
         return id;
     }
@@ -47,11 +56,11 @@ public class Comentario {
         this.texto = texto;
     }
 
-    public Date getDataCriacao() {
+    public @NotNull(message = "O campo não pode ser vazio ou nulo.") LocalDate getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(Date dataCriacao) {
+    public void setDataCriacao(@NotNull(message = "O campo não pode ser vazio ou nulo.") LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
