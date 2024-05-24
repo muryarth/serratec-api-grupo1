@@ -1,42 +1,74 @@
 package org.serratec.trabalho.grupo1.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import org.serratec.trabalho.grupo1.exception.MensagensValidator;
+import java.util.Objects;
 
-import java.util.Date;
+import org.serratec.trabalho.grupo1.dto.UsuarioDTO;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 @Entity
-@Table(name="relacao")
+@Table(name = "relacao")
 public class Relacao {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "id_relacao")
     private Long id;
 
-    @NotNull(message = MensagensValidator.NOT_NULL)
-    @Column(name= "date_relacao")
-    private Date dataInicioSeguimento;
+    @ManyToOne
+    @JoinColumn(name = "seguidor_id", referencedColumnName = "id_usuario")
+    private UsuarioDTO seguidor;
 
-    public Relacao(Long id, Date dataInicioSeguimento) {
-        this.id = id;
-        this.dataInicioSeguimento = dataInicioSeguimento;
+    @ManyToOne
+    @JoinColumn(name = "seguido_id", referencedColumnName = "id_usuario")
+    private UsuarioDTO seguido;
+
+    public Relacao() {}
+
+    public Relacao(UsuarioDTO seguidor, UsuarioDTO seguido) {
+        this.seguidor = seguidor;
+        this.seguido = seguido;
     }
 
-    public @NotBlank(message = "A relacao não pode ser vazia ou nula") Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(@NotBlank(message = "A relacao não pode ser vazia ou nula") Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Date getDataInicioSeguimento() {
-        return dataInicioSeguimento;
+    public UsuarioDTO getSeguidor() {
+        return seguidor;
     }
 
-    public void setDataInicioSeguimento(Date dataInicioSeguimento) {
-        this.dataInicioSeguimento = dataInicioSeguimento;
+    public void setSeguidor(UsuarioDTO seguidor) {
+        this.seguidor = seguidor;
     }
 
+    public UsuarioDTO getSeguido() {
+        return seguido;
+    }
+
+    public void setSeguido(UsuarioDTO seguido) {
+        this.seguido = seguido;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Relacao relacao = (Relacao) o;
+        return Objects.equals(id, relacao.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

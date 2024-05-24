@@ -1,12 +1,22 @@
 package org.serratec.trabalho.grupo1.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 
-import java.util.Date;
-import java.util.Objects;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="usuario")
@@ -39,6 +49,12 @@ public class Usuario {
 
     @Column(name= "nascimento_usuario")
     private Date dataNascimento;
+    
+    @OneToMany(mappedBy = "seguidor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Relacao> seguindo = new HashSet<>();
+
+    @OneToMany(mappedBy = "seguido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Relacao> seguidores = new HashSet<>();
 
     public long getId_usuario() {
 		return id_usuario;
@@ -87,6 +103,22 @@ public class Usuario {
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
+	
+	public Set<Relacao> getSeguindo() {
+        return seguindo;
+    }
+
+    public void setSeguindo(Set<Relacao> seguindo) {
+        this.seguindo = seguindo;
+    }
+
+    public Set<Relacao> getSeguidores() {
+        return seguidores;
+    }
+
+    public void setSeguidores(Set<Relacao> seguidores) {
+        this.seguidores = seguidores;
+    }
 
 	@Override
     public boolean equals(Object o) {
