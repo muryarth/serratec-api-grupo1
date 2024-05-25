@@ -17,6 +17,15 @@ public class RelacaoPK {
     @JoinColumn(name = "seguidor_id", referencedColumnName = "id_usuario")
     private Usuario seguidor;
 
+    public RelacaoPK() {
+        super();
+    }
+
+    public RelacaoPK(Usuario seguido, Usuario seguidor) {
+        this.seguido = seguido;
+        this.seguidor = seguidor;
+    }
+
     public Usuario getSeguido() {
         return seguido;
     }

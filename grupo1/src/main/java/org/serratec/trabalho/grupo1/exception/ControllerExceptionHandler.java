@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import org.serratec.trabalho.grupo1.exception.ErroResposta;
 
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
@@ -48,8 +48,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NoContentException.class)
-    protected ResponseEntity<Void> handleNoContentException(NotFoundException ex) {
+    protected ResponseEntity<Void> handleNoContentException(NoContentException ex) {
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(IncompatibleEqualsException.class)
+    protected ResponseEntity<String> handleNotEqualException(IncompatibleEqualsException ex) {
+        return ResponseEntity.unprocessableEntity().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DuplicateItemException.class)
+    protected ResponseEntity<String> handleDuplicateItemException(DuplicateItemException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
 }
