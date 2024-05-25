@@ -1,15 +1,18 @@
 package org.serratec.trabalho.grupo1.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
@@ -17,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -53,8 +57,8 @@ public class Usuario implements UserDetails, Serializable {
     @NotBlank(message = MensagensValidator.NOT_BLANK)
     private String email;
 
-    @Column(name= "senha_usuario")
-    @Size(max = 40, message= MensagensValidator.INVALID_SIZE)
+    @Column(name= "senha_usuario", length = 80)
+    @Size(max = 80, message= MensagensValidator.INVALID_SIZE)
     @NotBlank(message = MensagensValidator.NOT_BLANK)
     private String senha;
 
@@ -67,6 +71,14 @@ public class Usuario implements UserDetails, Serializable {
 
     @OneToMany(mappedBy = "id.seguido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Relacao> seguidores = new HashSet<>();
+    
+    @OneToMany(mappedBy = "id.usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<UsuarioPerfil> usuarioPerfis = new HashSet<>();
+    
+    
+    @Column(name= "tipoPerfil")
+    @Size(max = 40, message= MensagensValidator.INVALID_SIZE)
+    private String tipoPerfil;
 
     public long getId() {
 		return id;
@@ -131,6 +143,23 @@ public class Usuario implements UserDetails, Serializable {
     public void setSeguidores(Set<Relacao> seguidores) {
         this.seguidores = seguidores;
     }
+    
+
+	public Set<UsuarioPerfil> getUsuarioPerfis() {
+		return usuarioPerfis;
+	}
+
+	public void setUsuarioPerfis(Set<UsuarioPerfil> usuarioPerfis) {
+		this.usuarioPerfis = usuarioPerfis;
+	}
+
+	public String getTipoPerfil() {
+		return tipoPerfil;
+	}
+
+	public void setTipoPerfil(String tipoPerfil) {
+		this.tipoPerfil = tipoPerfil;
+	}
 
 	@Override
     public boolean equals(Object o) {
@@ -145,9 +174,13 @@ public class Usuario implements UserDetails, Serializable {
         return Objects.hashCode(id);
     }
 
-	@Override
+    @Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		for(UsuarioPerfil usuarioPerfil: getUsuarioPerfis()) {
+			authorities.add(new SimpleGrantedAuthority(usuarioPerfil.getId().getPerfil().getNome()));
+		}
+		return authorities;
 	}
 
 	@Override

@@ -38,9 +38,9 @@ public class ConfigSeguranca {
 		http.csrf(csrf -> csrf.disable())
 		.cors((cors) -> cors.configurationSource(corsConfigurationSource()))
 		.httpBasic(Customizer.withDefaults()).authorizeHttpRequests(requests -> {
+			requests.requestMatchers(HttpMethod.GET, "/usuarios").permitAll();
 			requests.requestMatchers(HttpMethod.GET, "/login").permitAll();
-			requests.requestMatchers(HttpMethod.GET, "/enderecos/**").permitAll();
-			requests.requestMatchers(HttpMethod.GET, "/usuarios").hasAnyAuthority("ADMIN", "USER");
+			requests.requestMatchers(HttpMethod.GET, "/").hasAnyAuthority("ADMIN", "USER");
 			requests.requestMatchers(HttpMethod.POST, "/usuarios").hasAuthority("ADMIN")
 			.anyRequest().authenticated();
 		}).sessionManagement(session -> {

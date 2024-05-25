@@ -1,13 +1,13 @@
 package org.serratec.trabalho.grupo1.controller;
 
-import org.apache.coyote.Response;
 import org.serratec.trabalho.grupo1.dto.RelacaoDTO;
 import org.serratec.trabalho.grupo1.dto.UsuarioDTO;
-import org.serratec.trabalho.grupo1.model.Relacao;
 import org.serratec.trabalho.grupo1.model.Usuario;
 import org.serratec.trabalho.grupo1.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,7 +26,10 @@ public class UsuarioController {
 	/* Operações básicas do próprio Usuário */
 	
 	@GetMapping
-	public ResponseEntity<List<UsuarioDTO>> listar(){
+	public ResponseEntity<List<UsuarioDTO>> listar() {
+		UserDetails details = (UserDetails) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+		System.out.println("Login do usuario: " + details.getUsername());
 		return ResponseEntity.ok(usuarioService.findAll());
 	}
 	
