@@ -1,14 +1,14 @@
 package org.serratec.trabalho.grupo1.service;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
 import org.serratec.trabalho.grupo1.exception.NotFoundException;
 import org.serratec.trabalho.grupo1.model.Publicacao;
 import org.serratec.trabalho.grupo1.repository.PublicacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PublicacaoService {
@@ -42,7 +42,7 @@ public class PublicacaoService {
         if (publicacaoOpt.isPresent()) {
             Publicacao publicacao = publicacaoOpt.get();
             publicacao.setConteudo(novaPublicacao.getConteudo());
-            publicacao.setDataCriacao(novaPublicacao.getDataCriacao());
+            publicacao.setDataCriacao(LocalDate.now());
             publicacao.setComentarios(novaPublicacao.getComentarios());
             return publicacaoRepository.save(publicacao);
         }

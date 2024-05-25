@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping ("/comentarios")
+@RequestMapping("/comentarios")
 public class ComentarioController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class ComentarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Comentario> atualizar(@PathVariable Long id, @RequestBody Comentario comentario) {
-        Comentario atualizarComentario = comentarioService.atualizar(id,comentario);
+        Comentario atualizarComentario = comentarioService.atualizar(id, comentario);
         return ResponseEntity.ok().body(atualizarComentario);
     }
 
@@ -49,5 +49,4 @@ public class ComentarioController {
         comentarioService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

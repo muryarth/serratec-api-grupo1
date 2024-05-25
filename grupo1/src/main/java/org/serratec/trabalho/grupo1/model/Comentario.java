@@ -5,9 +5,17 @@ import java.util.Objects;
 
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -23,17 +31,18 @@ public class Comentario {
     @Column(name = "texto", length = 200, nullable = false)
     private String texto;
 
-    @NotNull(message = MensagensValidator.NOT_NULL)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @Column(name = "data_criacao", nullable = false)
     private LocalDate dataCriacao;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "publicacao_id", nullable = false)
     private Publicacao publicacao;
 
-    // Construtor padrão para JPA.
+    
     public Comentario() {
-        // Construtor vazio
+    	this.dataCriacao = LocalDate.now(); // Define a data de criação como a data atual
     }
 
     public Long getId() {
@@ -53,14 +62,14 @@ public class Comentario {
     }
 
     public LocalDate getDataCriacao() {
-        return dataCriacao;
-    }
+		return dataCriacao;
+	}
 
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
+	public void setDataCriacao(LocalDate dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
 
-    public Publicacao getPublicacao() {
+	public Publicacao getPublicacao() {
         return publicacao;
     }
 
