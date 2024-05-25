@@ -1,12 +1,13 @@
 package org.serratec.trabalho.grupo1.service;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
 import org.serratec.trabalho.grupo1.model.Comentario;
 import org.serratec.trabalho.grupo1.repository.ComentarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ComentarioService {
@@ -24,6 +25,7 @@ public class ComentarioService {
     }
 
     public Comentario inserir(Comentario comentario) {
+        comentario.setDataCriacao(LocalDate.now());
         return comentarioRepository.save(comentario);
     }
 

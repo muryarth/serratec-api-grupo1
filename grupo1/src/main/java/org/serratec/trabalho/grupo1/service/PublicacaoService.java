@@ -1,5 +1,6 @@
 package org.serratec.trabalho.grupo1.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,7 @@ public class PublicacaoService {
     }
 
     public Publicacao create(Publicacao publicacao) {
+        publicacao.setDataCriacao(LocalDate.now());
         return publicacaoRepository.save(publicacao);
     }
 
