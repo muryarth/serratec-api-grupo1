@@ -5,11 +5,7 @@ import java.util.Objects;
 
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,15 +13,13 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class Comentario {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_comentario")
     private Long id;
 
     @NotBlank(message = MensagensValidator.NOT_BLANK)
-    @Size(max = 200 ,message = MensagensValidator.INVALID_SIZE)
+    @Size(max = 200, message = MensagensValidator.INVALID_SIZE)
     @Column(name = "texto", length = 200, nullable = false)
     private String texto;
 
@@ -33,13 +27,15 @@ public class Comentario {
     @Column(name = "data_criacao", nullable = false)
     private LocalDate dataCriacao;
 
+    @ManyToOne
+    @JoinColumn(name = "publicacao_id", nullable = false)
+    private Publicacao publicacao;
 
-    //Construtor padrao para JPA.
+    // Construtor padrão para JPA.
     public Comentario() {
         // Construtor vazio
     }
 
-    
     public Long getId() {
         return id;
     }
@@ -56,12 +52,20 @@ public class Comentario {
         this.texto = texto;
     }
 
-    public @NotNull(message = "O campo não pode ser vazio ou nulo.") LocalDate getDataCriacao() {
+    public LocalDate getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(@NotNull(message = "O campo não pode ser vazio ou nulo.") LocalDate dataCriacao) {
+    public void setDataCriacao(LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
+    }
+
+    public Publicacao getPublicacao() {
+        return publicacao;
+    }
+
+    public void setPublicacao(Publicacao publicacao) {
+        this.publicacao = publicacao;
     }
 
     @Override

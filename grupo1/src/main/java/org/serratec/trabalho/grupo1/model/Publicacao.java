@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +29,9 @@ public class Publicacao {
     @Column(name = "data_criacao", nullable = false)
     private LocalDate dataCriacao;
 
+    @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Comentario> comentarios;
+
     public Publicacao() {
         super();
     }
@@ -47,20 +51,28 @@ public class Publicacao {
         this.id = id;
     }
 
-    public @NotBlank(message = MensagensValidator.NOT_BLANK) @Size(max = 255, message = MensagensValidator.INVALID_MAX_SIZE) String getConteudo() {
+    public String getConteudo() {
         return conteudo;
     }
 
-    public void setConteudo(@NotBlank(message = MensagensValidator.NOT_BLANK) @Size(max = 255, message = MensagensValidator.INVALID_MAX_SIZE) String conteudo) {
+    public void setConteudo(String conteudo) {
         this.conteudo = conteudo;
     }
 
-    public @NotNull(message = MensagensValidator.NOT_NULL) LocalDate getDataCriacao() {
+    public LocalDate getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(@NotNull(message = MensagensValidator.NOT_NULL) LocalDate dataCriacao) {
+    public void setDataCriacao(LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
+    }
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
     }
 
     @Override
