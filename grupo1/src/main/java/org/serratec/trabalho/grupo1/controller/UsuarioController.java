@@ -20,8 +20,8 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-	@Autowired
-	private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioService usuarioService;
 
 	/* Operações básicas do próprio Usuário */
 	
@@ -48,28 +48,47 @@ public class UsuarioController {
                 .toUri();
         return ResponseEntity.created(uri).body(usuarioDTO);
     }
-	
-	@PutMapping("/{id}")
+
+    @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario novoUsuario) {
-        UsuarioDTO usuarioDTO = usuarioService.alterar(id, novoUsuario);
+        UsuarioDTO usuarioDTO = usuarioService.update(id, novoUsuario);
         return ResponseEntity.ok(usuarioDTO);
     }
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletar(@PathVariable Long id){
-		usuarioService.deletar(id);
-		return ResponseEntity.noContent().build();
-	}
 
-	/* Operações na tabela de Relações */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        usuarioService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 
-	@GetMapping("/{id}/relacoes/seguidores")
-	public ResponseEntity<List<RelacaoDTO>> listarTodosSeguidores(@PathVariable Long id){
-		return ResponseEntity.ok(usuarioService.findAllFollowersById(id));
-	}
+    /* Operações na tabela de Relações */
 
-	@GetMapping("/{id}/relacoes/seguindo")
-	public ResponseEntity<List<RelacaoDTO>> listarTodosSeguindo(@PathVariable Long id){
-		return ResponseEntity.ok(usuarioService.findAllFollowingById(id));
-	}
+    @GetMapping("/{id}/followers")
+    public ResponseEntity<List<RelacaoDTO>> listarTodosSeguidores(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioService.findAllFollowersById(id));
+    }
+
+    @GetMapping("/{id}/following")
+    public ResponseEntity<List<RelacaoDTO>> listarTodosSeguindo(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioService.findAllFollowingById(id));
+    }
+
+    @PostMapping("/{seguidoId}/follows/{seguidorId}")
+    public ResponseEntity<RelacaoDTO> darFollow(@PathVariable("seguidoId") Long seguidoId,
+                                                @PathVariable("seguidorId") Long seguidorId) {
+        RelacaoDTO relacaoDTO = usuarioService.giveFollow(seguidoId, seguidorId);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{seguidoId}/follows/{seguidorId}")
+                .buildAndExpand(seguidoId, seguidorId)
+                .toUri();
+        return ResponseEntity.created(uri).body(relacaoDTO);
+    }
+
+    @DeleteMapping("/{seguidoId}/follows/{seguidorId}")
+    public ResponseEntity<String> removerFollow(@PathVariable("seguidoId") Long seguidoId,
+                                                @PathVariable("seguidorId") Long seguidorId) {
+        usuarioService.removeFollow(seguidoId, seguidorId);
+        return ResponseEntity.noContent().build();
+    }
 }

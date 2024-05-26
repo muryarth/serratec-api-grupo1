@@ -1,23 +1,22 @@
 package org.serratec.trabalho.grupo1.service;
 
+import jakarta.transaction.Transactional;
 import org.serratec.trabalho.grupo1.dto.RelacaoDTO;
 import org.serratec.trabalho.grupo1.dto.UsuarioDTO;
-import org.serratec.trabalho.grupo1.dto.UsuarioInserirDTO;
-import org.serratec.trabalho.grupo1.exception.EmailException;
-import org.serratec.trabalho.grupo1.exception.NoContentException;
-import org.serratec.trabalho.grupo1.exception.NotFoundException;
-import org.serratec.trabalho.grupo1.exception.SenhaException;
-import org.serratec.trabalho.grupo1.model.Perfil;
+import org.serratec.trabalho.grupo1.exception.*;
 import org.serratec.trabalho.grupo1.model.Relacao;
+import org.serratec.trabalho.grupo1.model.RelacaoPK;
 import org.serratec.trabalho.grupo1.model.Usuario;
 import org.serratec.trabalho.grupo1.model.UsuarioPerfil;
 import org.serratec.trabalho.grupo1.repository.RelacaoRepository;
 import org.serratec.trabalho.grupo1.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,17 +39,17 @@ public class UsuarioService {
 	private BCryptPasswordEncoder encoder;
 
     public List<UsuarioDTO> findAll() {
-		 List<Usuario> usuarios = usuarioRepository.findAll();
-		 
-		 List<UsuarioDTO> usuarioDTO = new ArrayList<>();
-		 
-		 for (Usuario usuario: usuarios) {
-			 UsuarioDTO usuDTO = new UsuarioDTO(usuario);
-			 usuarioDTO.add(usuDTO);
-		 }
-		 return usuarioDTO;
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        List<UsuarioDTO> usuarioDTO = new ArrayList<>();
+
+        for (Usuario usuario : usuarios) {
+            UsuarioDTO usuDTO = new UsuarioDTO(usuario);
+            usuarioDTO.add(usuDTO);
+        }
+        return usuarioDTO;
     }
-    
+
     public UsuarioDTO findById(Long id) throws NotFoundException {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
         if (usuarioOpt.isEmpty()) {
@@ -58,21 +57,21 @@ public class UsuarioService {
         }
         return new UsuarioDTO(usuarioOpt.get());
     }
-    
-    public UsuarioDTO create(Usuario usuario){
+
+    public UsuarioDTO create(Usuario usuario) {
         usuarioRepository.save(usuario);
         return new UsuarioDTO(usuario);
     }
-    
-    public UsuarioDTO alterar(Long id,  Usuario novoUsuario) {
-    	Optional<Usuario> usuOPT= usuarioRepository.findById(id);
-    	if(!usuOPT.isPresent()) {
-    		throw new NotFoundException();
-    	}
-    	novoUsuario.setId(id);
-    	return new UsuarioDTO(usuarioRepository.save(novoUsuario));
+
+    public UsuarioDTO update(Long id, Usuario novoUsuario) {
+        Optional<Usuario> usuOPT = usuarioRepository.findById(id);
+        if (!usuOPT.isPresent()) {
+            throw new NotFoundException();
+        }
+        novoUsuario.setId(id);
+        return new UsuarioDTO(usuarioRepository.save(novoUsuario));
     }
-    
+
     public void deletar(Long id) throws NotFoundException {
     	Optional<Usuario> usuOPT= usuarioRepository.findById(id);
     	if(!usuOPT.isPresent()) {
@@ -111,22 +110,22 @@ public class UsuarioService {
 		return usuarioDTO;
 	}
 
-    /* Referente à relações */
-    
+    /* Referente ao follow de usuários */
+
     public List<RelacaoDTO> findAllFollowersById(Long id) throws NotFoundException, NoContentException {
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 
-        if(usuarioOpt.isPresent()){
+        if (usuarioOpt.isPresent()) {
             List<Relacao> relacoes = relacaoRepository.findAllFollowersByUserId(id);
             List<RelacaoDTO> relacoesDTO = new ArrayList<>();
 
-            for(Relacao relacao : relacoes){
+            for (Relacao relacao : relacoes) {
                 RelacaoDTO relacaoDTO = new RelacaoDTO(relacao);
                 relacoesDTO.add(relacaoDTO);
             }
 
-            if(!relacoesDTO.isEmpty()){
+            if (!relacoesDTO.isEmpty()) {
                 return relacoesDTO;
             }
 
@@ -140,16 +139,16 @@ public class UsuarioService {
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 
-        if(usuarioOpt.isPresent()){
+        if (usuarioOpt.isPresent()) {
             List<Relacao> relacoes = relacaoRepository.findAllFollowingById(id);
             List<RelacaoDTO> relacoesDTO = new ArrayList<>();
 
-            for(Relacao relacao : relacoes){
+            for (Relacao relacao : relacoes) {
                 RelacaoDTO relacaoDTO = new RelacaoDTO(relacao);
                 relacoesDTO.add(relacaoDTO);
             }
 
-            if(!relacoesDTO.isEmpty()){
+            if (!relacoesDTO.isEmpty()) {
                 return relacoesDTO;
             }
 
@@ -157,5 +156,42 @@ public class UsuarioService {
         }
 
         throw new NotFoundException();
+    }
+
+    public RelacaoDTO giveFollow(Long seguidoId, Long seguidorId) {
+
+        Optional<Usuario> seguidoOpt = usuarioRepository.findById(seguidoId);
+        Optional<Usuario> seguidorOpt = usuarioRepository.findById(seguidorId);
+
+        if (seguidoOpt.isPresent() && seguidorOpt.isPresent()) {
+
+            Optional<Relacao> relacaoOpt = relacaoRepository.findByCompositeId(seguidoId, seguidorId);
+
+            if (relacaoOpt.isEmpty()) {
+                if (!seguidorOpt.get().equals(seguidoOpt.get())) {
+                    return new RelacaoDTO(relacaoRepository.save(
+                            new Relacao(new RelacaoPK(seguidoOpt.get(), seguidorOpt.get()), LocalDate.now())
+                    ));
+                }
+
+                // Exception para quando IDs iguais são encontrados
+                throw new IncompatibleEqualsException();
+            }
+
+            // Exception para quando tenta criar um follow que já estava criado
+            throw new DuplicateItemException();
+        }
+
+        throw new NotFoundException();
+    }
+
+    public void removeFollow(Long seguidoId, Long seguidorId) {
+        Optional<Relacao> relacaoOpt = relacaoRepository.findByCompositeId(seguidoId, seguidorId);
+
+        if (relacaoOpt.isEmpty()) {
+            throw new NotFoundException();
+        }
+
+        relacaoRepository.deleteByCompositeId(seguidoId, seguidorId);
     }
 }

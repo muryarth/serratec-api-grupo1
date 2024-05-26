@@ -15,7 +15,7 @@ public class RelacaoDTO {
         this.seguido = relacao.getId().getSeguido().getNome();
         this.seguidoEmail = relacao.getId().getSeguido().getEmail();
         this.seguidor = relacao.getId().getSeguidor().getNome();
-        this.dataFollow = dataFollow;
+        this.dataFollow = relacao.getDataRealizacao();
     }
 
     public String getSeguido() {
