@@ -4,8 +4,8 @@ import org.serratec.trabalho.grupo1.model.Comentario;
 import org.serratec.trabalho.grupo1.repository.ComentarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,34 +15,33 @@ public class ComentarioService {
     @Autowired
     private ComentarioRepository comentarioRepository;
 
-    public List<Comentario> listar () {
-        List<Comentario> comentarios = comentarioRepository.findAll();
-        return comentarios;
+    public List<Comentario> listar() {
+        return comentarioRepository.findAll();
     }
 
-    public Comentario buscar(@PathVariable Long id) {
+    public Comentario buscar(Long id) {
         Optional<Comentario> comentarioOpt = comentarioRepository.findById(id);
-        return comentarioOpt.get();
+        return comentarioOpt.orElse(null);
     }
 
     public Comentario inserir(Comentario comentario) {
+        comentario.setDataCriacao(LocalDate.now());
         return comentarioRepository.save(comentario);
     }
 
-    public Comentario atualizar(@PathVariable Long id, Comentario novoComentario) {
+    public Comentario atualizar(Long id, Comentario novoComentario) {
         Optional<Comentario> optionalComentario = comentarioRepository.findById(id);
         if (optionalComentario.isPresent()) {
             novoComentario.setId(id);
-            return (Comentario) comentarioRepository.save(novoComentario);
+            novoComentario.setDataCriacao(LocalDate.now());
+            return comentarioRepository.save(novoComentario);
         } else {
             // Exception
             return null;
         }
     }
 
-    public Comentario delete(Long id){
+    public void delete(Long id) {
         comentarioRepository.deleteById(id);
-        return null;
     }
-
 }

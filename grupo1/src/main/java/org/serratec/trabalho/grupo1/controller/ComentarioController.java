@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping ("/comentarios")
+@RequestMapping("/comentarios")
 public class ComentarioController {
 
     @Autowired
     private ComentarioService comentarioService;
-
-    private Comentario comentario;
 
     @GetMapping
     public ResponseEntity<List<Comentario>> listar() {
@@ -40,21 +38,15 @@ public class ComentarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novoComentario);
     }
 
-//    @PostMapping
-//    public ResponseEntity<Comentario> inserir() {
-//        return ResponseEntity.ok(comentarioService.inserir());
-//    }
-
     @PutMapping("/{id}")
     public ResponseEntity<Comentario> atualizar(@PathVariable Long id, @RequestBody Comentario comentario) {
-        Comentario atualizarComentario = comentarioService.atualizar(id,comentario);
+        Comentario atualizarComentario = comentarioService.atualizar(id, comentario);
         return ResponseEntity.ok().body(atualizarComentario);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Comentario> deletar(@PathVariable Long id) {
-        Comentario deletarComentario = comentarioService.delete(id);
-        return ResponseEntity.ok().body(deletarComentario);
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        comentarioService.delete(id);
+        return ResponseEntity.noContent().build();
     }
-
 }
