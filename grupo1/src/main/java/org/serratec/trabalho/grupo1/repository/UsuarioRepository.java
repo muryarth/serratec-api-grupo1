@@ -1,9 +1,5 @@
 package org.serratec.trabalho.grupo1.repository;
 
-import jakarta.persistence.ColumnResult;
-import jakarta.persistence.ConstructorResult;
-import jakarta.persistence.SqlResultSetMapping;
-import org.serratec.trabalho.grupo1.dto.FollowDTO;
 import org.serratec.trabalho.grupo1.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

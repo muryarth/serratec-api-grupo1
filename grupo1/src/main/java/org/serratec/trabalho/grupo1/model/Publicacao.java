@@ -28,7 +28,7 @@ public class Publicacao {
     private String conteudo;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    @Column(name = "data_criacao", nullable = false)
+    @Column(name = "data_criacao")
     private LocalDate dataCriacao;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -42,6 +42,11 @@ public class Publicacao {
 
     public Publicacao() {
         super();
+    }
+
+    public Publicacao(NovaPublicacaoDTO publi) {
+        this.conteudo = publi.getConteudo();
+        this.autor = publi.getAutor();
     }
 
     public Publicacao(Long id, String conteudo, LocalDate dataCriacao) {

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.serratec.trabalho.grupo1.dto.PublicacaoDTO;
+import org.serratec.trabalho.grupo1.model.NovaPublicacaoDTO;
 import org.serratec.trabalho.grupo1.model.Publicacao;
 import org.serratec.trabalho.grupo1.service.PublicacaoService;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,9 @@ public class PublicacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<PublicacaoDTO> create(@Valid @RequestBody Publicacao publicacao) {
+    public ResponseEntity<PublicacaoDTO> create(@Valid @RequestBody NovaPublicacaoDTO novaPublicacaoDTO) {
+
+        Publicacao publicacao = new Publicacao(novaPublicacaoDTO);
         PublicacaoDTO novaPublicacao = publicacaoService.create(publicacao);
 
         URI uri = ServletUriComponentsBuilder
@@ -48,8 +51,9 @@ public class PublicacaoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PublicacaoDTO> update(@PathVariable Long id, @Valid @RequestBody Publicacao novaPublicacao) {
-        PublicacaoDTO publicacaoAtualizada = publicacaoService.findAndUpdate(id, novaPublicacao);
+    public ResponseEntity<PublicacaoDTO> update(@PathVariable Long id, @Valid @RequestBody NovaPublicacaoDTO novaPublicacaoDTO) {
+        Publicacao publicacaoPublicacao = new Publicacao(novaPublicacaoDTO);
+        PublicacaoDTO publicacaoAtualizada = publicacaoService.findAndUpdate(id, publicacaoPublicacao);
         return ResponseEntity.ok(publicacaoAtualizada);
     }
 

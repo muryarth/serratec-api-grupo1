@@ -52,9 +52,11 @@ public class UsuarioService {
 
     public UsuarioDTO findById(Long id) throws NotFoundException {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+
         if (usuarioOpt.isEmpty()) {
             throw new NotFoundException();
         }
+
         return new UsuarioDTO(usuarioOpt.get());
     }
 
@@ -65,9 +67,11 @@ public class UsuarioService {
 
     public UsuarioDTO update(Long id, Usuario novoUsuario) {
         Optional<Usuario> usuOPT = usuarioRepository.findById(id);
-        if (!usuOPT.isPresent()) {
+
+        if (usuOPT.isEmpty()) {
             throw new NotFoundException();
         }
+
         novoUsuario.setId(id);
         return new UsuarioDTO(usuarioRepository.save(novoUsuario));
     }
