@@ -40,8 +40,7 @@ public class ConfigSeguranca {
 		.httpBasic(Customizer.withDefaults()).authorizeHttpRequests(requests -> {
 			requests.requestMatchers(HttpMethod.GET, "/usuarios").permitAll();
 			requests.requestMatchers(HttpMethod.GET, "/login").permitAll();
-			requests.requestMatchers(HttpMethod.GET, "/").hasAnyAuthority("ADMIN", "USER");
-			requests.requestMatchers(HttpMethod.POST, "/usuarios").hasAuthority("ADMIN")
+			requests.requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
 			.anyRequest().authenticated();
 		}).sessionManagement(session -> {
 			session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -63,7 +62,6 @@ public class ConfigSeguranca {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000/"));
 		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
-		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", corsConfiguration.applyPermitDefaultValues());
 		
