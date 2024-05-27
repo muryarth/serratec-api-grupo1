@@ -68,7 +68,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UnauthorizedActionException.class)
-    protected ResponseEntity<String> handleUnauthorizedActionException(ForeignKeyMustBeNullException ex) {
+    protected ResponseEntity<String> handleUnauthorizedActionException(UnauthorizedActionException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 

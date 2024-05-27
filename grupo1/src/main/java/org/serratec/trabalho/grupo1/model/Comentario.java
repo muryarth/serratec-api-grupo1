@@ -41,11 +41,12 @@ public class Comentario {
     private Publicacao publicacao;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "autor_id", nullable = false)
     private Usuario autor;
-    
+
     public Comentario() {
-    	this.dataCriacao = LocalDate.now(); // Define a data de criação como a data atual
+
     }
 
     public Long getId() {

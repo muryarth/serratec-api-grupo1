@@ -16,6 +16,13 @@ public class FollowDTO {
         this.nomeSeguido = nomeSeguido;
     }
 
+    public FollowDTO(Object[] array) {
+        this.idSeguidor = (Long) array[0];
+        this.nomeSeguidor = (String) array[1];
+        this.idSeguido = (Long) array[2];
+        this.nomeSeguido = (String) array[3];
+    }
+
     public Long getIdSeguidor() {
         return idSeguidor;
     }
