@@ -3,6 +3,7 @@ package org.serratec.trabalho.grupo1.service;
 import org.serratec.trabalho.grupo1.dto.ComentarioDTO;
 import org.serratec.trabalho.grupo1.dto.ComentarioEditadoDTO;
 import org.serratec.trabalho.grupo1.dto.FollowDTO;
+import org.serratec.trabalho.grupo1.dto.PublicacaoDTO;
 import org.serratec.trabalho.grupo1.exception.NoContentException;
 import org.serratec.trabalho.grupo1.exception.NotFoundException;
 import org.serratec.trabalho.grupo1.exception.UnauthorizedActionException;
@@ -31,13 +32,21 @@ public class ComentarioService {
     @Autowired
     private PublicacaoRepository publicacaoRepository;
 
-    public List<Comentario> listar() {
-        return comentarioRepository.findAll();
+    public List<ComentarioDTO> listar() {
+
+        List<Comentario> comentarios = comentarioRepository.findAll();
+
+        return comentarios.stream().map(ComentarioDTO::new).toList();
     }
 
-    public Comentario buscar(Long id) {
+    public ComentarioDTO buscar(Long id) {
         Optional<Comentario> comentarioOpt = comentarioRepository.findById(id);
-        return comentarioOpt.orElse(null);
+
+        if(comentarioOpt.isEmpty()){
+            throw new NotFoundException();
+        }
+
+        return new ComentarioDTO(comentarioOpt.get());
     }
 
     public ComentarioDTO inserir(Comentario comentario) {

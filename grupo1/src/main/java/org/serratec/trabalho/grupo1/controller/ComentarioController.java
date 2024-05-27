@@ -20,13 +20,13 @@ public class ComentarioController {
     private ComentarioService comentarioService;
 
     @GetMapping
-    public ResponseEntity<List<Comentario>> listar() {
+    public ResponseEntity<List<ComentarioDTO>> listar() {
         return ResponseEntity.ok(comentarioService.listar());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Comentario> buscar(@PathVariable Long id) {
-        Comentario comentarioPorId = comentarioService.buscar(id);
+    public ResponseEntity<ComentarioDTO> buscar(@PathVariable Long id) {
+        ComentarioDTO comentarioPorId = comentarioService.buscar(id);
         if (comentarioPorId != null) {
             return ResponseEntity.ok().body(comentarioPorId);
         } else {
