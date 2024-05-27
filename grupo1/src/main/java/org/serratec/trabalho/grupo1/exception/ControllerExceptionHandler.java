@@ -62,4 +62,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
+    @ExceptionHandler(ForeignKeyMustBeNullException.class)
+    protected ResponseEntity<String> handleForeignKeyMustBeNullException(ForeignKeyMustBeNullException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+    }
 }

@@ -1,5 +1,5 @@
 INSERT INTO usuario (data_nascimento_usuario, email_usuario, nome_usuario, senha_usuario, sobrenome_usuario)
-VALUES ('1995-05-12', 'usuario1@email.com', 'João', 'senha123', 'Silva');
+VALUES ('1995-05-12', 'admin@admin.com', 'João', '$2a$12$Iv1Ljs8YB3dPekbtAn/QieGZ.YfRq8KEun2CN9wh9V55P3Uhr1TlO', 'Silva');
 
 INSERT INTO usuario (data_nascimento_usuario, email_usuario, nome_usuario, senha_usuario, sobrenome_usuario)
 VALUES ('1988-09-30', 'usuario2@email.com', 'Maria', 'abc123', 'Santos');

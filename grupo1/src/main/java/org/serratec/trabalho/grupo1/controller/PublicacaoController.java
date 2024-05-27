@@ -3,6 +3,7 @@ package org.serratec.trabalho.grupo1.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.serratec.trabalho.grupo1.dto.PublicacaoDTO;
 import org.serratec.trabalho.grupo1.model.Publicacao;
 import org.serratec.trabalho.grupo1.service.PublicacaoService;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +23,20 @@ public class PublicacaoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Publicacao>> listAll() {
-        List<Publicacao> publicacoes = publicacaoService.findAll();
+    public ResponseEntity<List<PublicacaoDTO>> listAll() {
+        List<PublicacaoDTO> publicacoes = publicacaoService.findAll();
         return ResponseEntity.ok(publicacoes);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Publicacao> listById(@PathVariable Long id) {
-        Publicacao publicacao = publicacaoService.findById(id);
+    public ResponseEntity<PublicacaoDTO> listById(@PathVariable Long id) {
+        PublicacaoDTO publicacao = publicacaoService.findById(id);
         return ResponseEntity.ok(publicacao);
     }
 
     @PostMapping
-    public ResponseEntity<Publicacao> create(@Valid @RequestBody Publicacao publicacao) {
-        Publicacao novaPublicacao = publicacaoService.create(publicacao);
+    public ResponseEntity<PublicacaoDTO> create(@Valid @RequestBody Publicacao publicacao) {
+        PublicacaoDTO novaPublicacao = publicacaoService.create(publicacao);
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -47,8 +48,8 @@ public class PublicacaoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Publicacao> update(@PathVariable Long id, @Valid @RequestBody Publicacao novaPublicacao) {
-        Publicacao publicacaoAtualizada = publicacaoService.findAndUpdate(id, novaPublicacao);
+    public ResponseEntity<PublicacaoDTO> update(@PathVariable Long id, @Valid @RequestBody Publicacao novaPublicacao) {
+        PublicacaoDTO publicacaoAtualizada = publicacaoService.findAndUpdate(id, novaPublicacao);
         return ResponseEntity.ok(publicacaoAtualizada);
     }
 

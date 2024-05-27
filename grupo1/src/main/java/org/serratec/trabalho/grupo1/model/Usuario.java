@@ -10,12 +10,12 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -29,8 +29,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-
-
 @Entity
 @Table(name="usuario")
 public class Usuario implements UserDetails, Serializable {
@@ -40,7 +38,7 @@ public class Usuario implements UserDetails, Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id_usuario")
-    private long id;
+    private Long id;
 
     @Column(name= "nome_usuario")
     @Size(max = 40, message = MensagensValidator.INVALID_SIZE)
@@ -71,14 +69,22 @@ public class Usuario implements UserDetails, Serializable {
 
     @OneToMany(mappedBy = "id.seguido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Relacao> seguidores = new HashSet<>();
+
+	/* Follow */
     
     @OneToMany(mappedBy = "id.usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<UsuarioPerfil> usuarioPerfis = new HashSet<>();
-    
-    
+
     @Column(name= "tipoPerfil")
     @Size(max = 40, message= MensagensValidator.INVALID_SIZE)
     private String tipoPerfil;
+
+	/* Post */
+
+	@OneToMany(mappedBy = "autor")
+	@JsonManagedReference
+	@JsonIgnore
+	private List<Publicacao> autores;
 
     public long getId() {
 		return id;

@@ -4,19 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import org.serratec.trabalho.grupo1.exception.MensagensValidator;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -37,6 +31,11 @@ public class Publicacao {
     @Column(name = "data_criacao", nullable = false)
     private LocalDate dataCriacao;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    // @JsonBackReference
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario autor;
+
     @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Comentario> comentarios;
@@ -49,7 +48,7 @@ public class Publicacao {
         super();
         this.id = id;
         this.conteudo = conteudo;
-        this.dataCriacao = LocalDate.now(); // Define a data de criação como a data atual
+        this.dataCriacao = dataCriacao;
     }
 
     public Long getId() {
@@ -82,6 +81,14 @@ public class Publicacao {
 
     public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
+    }
+
+    public Usuario getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Usuario autor) {
+        this.autor = autor;
     }
 
     @Override

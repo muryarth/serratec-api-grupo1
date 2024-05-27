@@ -9,6 +9,10 @@ import org.serratec.trabalho.grupo1.model.*;
 import org.serratec.trabalho.grupo1.repository.RelacaoRepository;
 import org.serratec.trabalho.grupo1.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +26,17 @@ import java.util.Set;
 
 @Service
 public class UsuarioService {
-	@Autowired
-	private PerfilService perfilService;
+    @Autowired
+    private PerfilService perfilService;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
     private RelacaoRepository relacaoRepository;
-    
-	@Autowired
-	private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public List<UsuarioDTO> findAll() {
         List<Usuario> usuarios = usuarioRepository.findAll();
@@ -69,51 +73,53 @@ public class UsuarioService {
     }
 
     public void deletar(Long id) throws NotFoundException {
-    	Optional<Usuario> usuOPT= usuarioRepository.findById(id);
-    	if(!usuOPT.isPresent()) {
-    		throw new NotFoundException();
-    	}
-    	usuarioRepository.deleteById(id);	
+        Optional<Usuario> usuOPT = usuarioRepository.findById(id);
+        if (!usuOPT.isPresent()) {
+            throw new NotFoundException();
+        }
+        usuarioRepository.deleteById(id);
     }
-    
+
     @Transactional
-	public UsuarioDTO inserir(UsuarioInserirDTO usuarioInserirDTO) throws EmailException, SenhaException {
-		if (!usuarioInserirDTO.getSenha().equalsIgnoreCase(usuarioInserirDTO.getConfirmaSenha())) {
-			throw new SenhaException("Senha e Confirma Senha não são iguais");
-		}
-		Usuario usuarioBd = usuarioRepository.findByEmail(usuarioInserirDTO.getEmail());
-		if (usuarioBd != null) {
-			throw new EmailException("Email ja existente");
-		}
-		
-		Usuario usuario = new Usuario();
-		usuario.setNome(usuarioInserirDTO.getNome());
-		usuario.setEmail(usuarioInserirDTO.getEmail());
-		usuario.setSenha(encoder.encode(usuarioInserirDTO.getSenha()));
-		
-		Set<UsuarioPerfil> usuarioPerfis = new HashSet<>();
-		for(Perfil perfil: usuarioInserirDTO.getPerfis()) {
-			perfil = perfilService.buscar(perfil.getId());
-			UsuarioPerfil usuarioPerfil = new UsuarioPerfil(usuario, perfil, LocalDate.now());
-			usuarioPerfis.add(usuarioPerfil);
-		}
-		
-		usuario.setUsuarioPerfis(usuarioPerfis);
-		
-		usuario = usuarioRepository.save(usuario);
-		
-		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
-		return usuarioDTO;
-	}
+    public UsuarioDTO inserir(UsuarioInserirDTO usuarioInserirDTO) throws EmailException, SenhaException {
+        if (!usuarioInserirDTO.getSenha().equalsIgnoreCase(usuarioInserirDTO.getConfirmaSenha())) {
+            throw new SenhaException("Senha e Confirma Senha não são iguais");
+        }
+        Usuario usuarioBd = usuarioRepository.findByEmail(usuarioInserirDTO.getEmail());
+        if (usuarioBd != null) {
+            throw new EmailException("Email ja existente");
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(usuarioInserirDTO.getNome());
+        usuario.setEmail(usuarioInserirDTO.getEmail());
+        usuario.setSenha(encoder.encode(usuarioInserirDTO.getSenha()));
+
+        Set<UsuarioPerfil> usuarioPerfis = new HashSet<>();
+        for (Perfil perfil : usuarioInserirDTO.getPerfis()) {
+            perfil = perfilService.buscar(perfil.getId());
+            UsuarioPerfil usuarioPerfil = new UsuarioPerfil(usuario, perfil, LocalDate.now());
+            usuarioPerfis.add(usuarioPerfil);
+        }
+
+        usuario.setUsuarioPerfis(usuarioPerfis);
+
+        usuario = usuarioRepository.save(usuario);
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+        return usuarioDTO;
+    }
 
     /* Referente ao follow de usuários */
 
-    public List<RelacaoDTO> findAllFollowersById(Long id) throws NotFoundException, NoContentException {
+    public List<RelacaoDTO> findAllFollowersById(
+            Long id, @PageableDefault(page = 0, size = 5) Pageable pageable)
+            throws NotFoundException, NoContentException {
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 
         if (usuarioOpt.isPresent()) {
-            List<Relacao> relacoes = relacaoRepository.findAllFollowersByUserId(id);
+            Page<Relacao> relacoes = relacaoRepository.findAllFollowersByUserId(id, pageable);
             List<RelacaoDTO> relacoesDTO = new ArrayList<>();
 
             for (Relacao relacao : relacoes) {
@@ -131,12 +137,14 @@ public class UsuarioService {
         throw new NotFoundException();
     }
 
-    public List<RelacaoDTO> findAllFollowingById(Long id) throws NotFoundException, NoContentException {
+    public List<RelacaoDTO> findAllFollowingById(
+            Long id, @PageableDefault(page = 0, size = 5) Pageable pageable)
+            throws NotFoundException, NoContentException {
 
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 
         if (usuarioOpt.isPresent()) {
-            List<Relacao> relacoes = relacaoRepository.findAllFollowingById(id);
+            Page<Relacao> relacoes = relacaoRepository.findAllFollowingByUserId(id, pageable);
             List<RelacaoDTO> relacoesDTO = new ArrayList<>();
 
             for (Relacao relacao : relacoes) {

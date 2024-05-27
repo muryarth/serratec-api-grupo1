@@ -5,6 +5,8 @@ import org.serratec.trabalho.grupo1.dto.UsuarioDTO;
 import org.serratec.trabalho.grupo1.model.Usuario;
 import org.serratec.trabalho.grupo1.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,15 +67,15 @@ public class UsuarioController {
 
     @GetMapping("/{id}/followers")
     public ResponseEntity<List<RelacaoDTO>> listarTodosSeguidores(@PathVariable Long id) {
-        return ResponseEntity.ok(usuarioService.findAllFollowersById(id));
+        return ResponseEntity.ok(usuarioService.findAllFollowersById(id, PageRequest.of(0, 5)));
     }
 
     @GetMapping("/{id}/following")
     public ResponseEntity<List<RelacaoDTO>> listarTodosSeguindo(@PathVariable Long id) {
-        return ResponseEntity.ok(usuarioService.findAllFollowingById(id));
+        return ResponseEntity.ok(usuarioService.findAllFollowingById(id, PageRequest.of(0, 5)));
     }
 
-    @PostMapping("/{seguidoId}/follows/{seguidorId}")
+    @PostMapping("/{seguidoId}/follow/{seguidorId}")
     public ResponseEntity<RelacaoDTO> darFollow(@PathVariable("seguidoId") Long seguidoId,
                                                 @PathVariable("seguidorId") Long seguidorId) {
         RelacaoDTO relacaoDTO = usuarioService.giveFollow(seguidoId, seguidorId);
@@ -85,7 +87,7 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(relacaoDTO);
     }
 
-    @DeleteMapping("/{seguidoId}/follows/{seguidorId}")
+    @DeleteMapping("/{seguidoId}/unfollow/{seguidorId}")
     public ResponseEntity<String> removerFollow(@PathVariable("seguidoId") Long seguidoId,
                                                 @PathVariable("seguidorId") Long seguidorId) {
         usuarioService.removeFollow(seguidoId, seguidorId);
