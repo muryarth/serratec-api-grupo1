@@ -66,4 +66,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<String> handleForeignKeyMustBeNullException(ForeignKeyMustBeNullException ex) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
     }
+
+    @ExceptionHandler(UnauthorizedActionException.class)
+    protected ResponseEntity<String> handleUnauthorizedActionException(ForeignKeyMustBeNullException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
 }

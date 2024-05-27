@@ -32,7 +32,7 @@ public class Comentario {
     private String texto;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    @Column(name = "data_criacao", nullable = false)
+    @Column(name = "data_criacao")
     private LocalDate dataCriacao;
 
     @ManyToOne
@@ -40,6 +40,9 @@ public class Comentario {
     @JoinColumn(name = "publicacao_id", nullable = false)
     private Publicacao publicacao;
 
+    @ManyToOne
+    @JoinColumn(name = "autor_id", nullable = false)
+    private Usuario autor;
     
     public Comentario() {
     	this.dataCriacao = LocalDate.now(); // Define a data de criação como a data atual
@@ -75,6 +78,14 @@ public class Comentario {
 
     public void setPublicacao(Publicacao publicacao) {
         this.publicacao = publicacao;
+    }
+
+    public Usuario getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Usuario autor) {
+        this.autor = autor;
     }
 
     @Override

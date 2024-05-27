@@ -79,6 +79,12 @@ public class Usuario implements UserDetails, Serializable {
     @Size(max = 40, message= MensagensValidator.INVALID_SIZE)
     private String tipoPerfil;
 
+	/* Comentário relacionado ao usuário que o fez */
+
+	@OneToMany(mappedBy = "autor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Comentario> comentarios;
+
 	/* Post */
 
 	@OneToMany(mappedBy = "autor")

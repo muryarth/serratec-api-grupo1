@@ -75,7 +75,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.findAllFollowingById(id, PageRequest.of(0, 5)));
     }
 
-    @PostMapping("/{seguidoId}/follow/{seguidorId}")
+    @PostMapping("/{seguidorId}/follow/{seguidoId}")
     public ResponseEntity<RelacaoDTO> darFollow(@PathVariable("seguidoId") Long seguidoId,
                                                 @PathVariable("seguidorId") Long seguidorId) {
         RelacaoDTO relacaoDTO = usuarioService.giveFollow(seguidoId, seguidorId);
@@ -87,7 +87,7 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(relacaoDTO);
     }
 
-    @DeleteMapping("/{seguidoId}/unfollow/{seguidorId}")
+    @DeleteMapping("/{seguidorId}/unfollow/{seguidoId}")
     public ResponseEntity<String> removerFollow(@PathVariable("seguidoId") Long seguidoId,
                                                 @PathVariable("seguidorId") Long seguidorId) {
         usuarioService.removeFollow(seguidoId, seguidorId);
