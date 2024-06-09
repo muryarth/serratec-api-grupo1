@@ -7,6 +7,7 @@ import org.serratec.trabalho.grupo1.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -66,8 +67,8 @@ public class UsuarioController {
     /* Operações na tabela de Relações */
 
     @GetMapping("/{id}/followers")
-    public ResponseEntity<List<RelacaoDTO>> listarTodosSeguidores(@PathVariable Long id) {
-        return ResponseEntity.ok(usuarioService.findAllFollowersById(id, PageRequest.of(0, 5)));
+    public ResponseEntity<List<RelacaoDTO>> listarTodosSeguidores(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(usuarioService.findAllFollowersById(id, pageable));
     }
 
     @GetMapping("/{id}/following")

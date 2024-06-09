@@ -61,8 +61,7 @@ public class UsuarioService {
     }
 
     public UsuarioDTO create(Usuario usuario) {
-        usuarioRepository.save(usuario);
-        return new UsuarioDTO(usuario);
+        return new UsuarioDTO(usuarioRepository.save(usuario));
     }
 
     public UsuarioDTO update(Long id, Usuario novoUsuario) {

@@ -87,7 +87,7 @@ public class Usuario implements UserDetails, Serializable {
 
 	/* Post */
 
-	@OneToMany(mappedBy = "autor")
+	@OneToMany(mappedBy = "autor", fetch = FetchType.LAZY)
 	@JsonManagedReference
 	@JsonIgnore
 	private List<Publicacao> autores;

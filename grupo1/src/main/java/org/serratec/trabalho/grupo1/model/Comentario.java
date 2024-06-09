@@ -49,6 +49,12 @@ public class Comentario {
 
     }
 
+    public Comentario(String texto, Publicacao publicacao, Usuario autor) {
+        this.texto = texto;
+        this.publicacao = publicacao;
+        this.autor = autor;
+    }
+
     public Long getId() {
         return id;
     }

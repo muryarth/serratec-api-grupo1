@@ -8,7 +8,9 @@ import org.serratec.trabalho.grupo1.exception.NoContentException;
 import org.serratec.trabalho.grupo1.exception.NotFoundException;
 import org.serratec.trabalho.grupo1.exception.UnauthorizedActionException;
 import org.serratec.trabalho.grupo1.model.Comentario;
+import org.serratec.trabalho.grupo1.model.NovoComentarioDTO;
 import org.serratec.trabalho.grupo1.model.Publicacao;
+import org.serratec.trabalho.grupo1.model.Usuario;
 import org.serratec.trabalho.grupo1.repository.ComentarioRepository;
 import org.serratec.trabalho.grupo1.repository.PublicacaoRepository;
 import org.serratec.trabalho.grupo1.repository.UsuarioRepository;
@@ -49,7 +51,16 @@ public class ComentarioService {
         return new ComentarioDTO(comentarioOpt.get());
     }
 
-    public ComentarioDTO inserir(Comentario comentario) {
+    public ComentarioDTO inserir(NovoComentarioDTO novoComentario) {
+        Optional<Usuario> autorOpt = usuarioRepository.findById(novoComentario.getIdAutor());
+        Optional<Publicacao> publicacaoOpt = publicacaoRepository.findById(novoComentario.getIdPublicacao());
+
+        if (autorOpt.isEmpty() || publicacaoOpt.isEmpty()){
+            throw new NotFoundException();
+        }
+
+        Comentario comentario = new Comentario(novoComentario.getTexto(),publicacaoOpt.get(),  autorOpt.get());
+
         Long usuarioSeguidoId = publicacaoRepository
                 .findById(comentario.getPublicacao().getId())
                 .orElseThrow(NotFoundException::new)

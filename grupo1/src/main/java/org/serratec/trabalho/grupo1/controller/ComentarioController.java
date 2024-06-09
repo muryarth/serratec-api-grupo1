@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.serratec.trabalho.grupo1.dto.ComentarioDTO;
 import org.serratec.trabalho.grupo1.dto.ComentarioEditadoDTO;
 import org.serratec.trabalho.grupo1.model.Comentario;
+import org.serratec.trabalho.grupo1.model.NovoComentarioDTO;
 import org.serratec.trabalho.grupo1.service.ComentarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,8 +36,8 @@ public class ComentarioController {
     }
 
     @PostMapping
-    public ResponseEntity<ComentarioDTO> inserirComentario(@Valid @RequestBody Comentario comentario) {
-        ComentarioDTO novoComentario = comentarioService.inserir(comentario);
+    public ResponseEntity<ComentarioDTO> inserirComentario(@Valid @RequestBody NovoComentarioDTO novoComentarioDTO) {
+        ComentarioDTO novoComentario = comentarioService.inserir(novoComentarioDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoComentario);
     }
 
