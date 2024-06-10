@@ -2,6 +2,7 @@ package org.serratec.trabalho.grupo1.controller;
 
 import org.serratec.trabalho.grupo1.dto.RelacaoDTO;
 import org.serratec.trabalho.grupo1.dto.UsuarioDTO;
+import org.serratec.trabalho.grupo1.dto.UsuarioInserirDTO;
 import org.serratec.trabalho.grupo1.model.Usuario;
 import org.serratec.trabalho.grupo1.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,8 @@ public class UsuarioController {
 	}
 	
 	@PostMapping
-    public ResponseEntity<UsuarioDTO> criar(@Valid @RequestBody Usuario usuario) {
-        UsuarioDTO usuarioDTO = usuarioService.create(usuario);
+    public ResponseEntity<UsuarioDTO> criar(@Valid @RequestBody UsuarioInserirDTO usuario) {
+        UsuarioDTO usuarioDTO = usuarioService.inserir(usuario);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

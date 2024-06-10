@@ -10,19 +10,14 @@ import org.serratec.trabalho.grupo1.repository.RelacaoRepository;
 import org.serratec.trabalho.grupo1.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UsuarioService {
@@ -60,10 +55,6 @@ public class UsuarioService {
         return new UsuarioDTO(usuarioOpt.get());
     }
 
-    public UsuarioDTO create(Usuario usuario) {
-        return new UsuarioDTO(usuarioRepository.save(usuario));
-    }
-
     public UsuarioDTO update(Long id, Usuario novoUsuario) {
         Optional<Usuario> usuOPT = usuarioRepository.findById(id);
 
@@ -85,32 +76,28 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioDTO inserir(UsuarioInserirDTO usuarioInserirDTO) throws EmailException, SenhaException {
+
+        // Confirma se a senha é igual
         if (!usuarioInserirDTO.getSenha().equalsIgnoreCase(usuarioInserirDTO.getConfirmaSenha())) {
             throw new SenhaException("Senha e Confirma Senha não são iguais");
         }
+
+        // Confirma se já existe alguém cadastrado com o email fornecido
         Usuario usuarioBd = usuarioRepository.findByEmail(usuarioInserirDTO.getEmail());
         if (usuarioBd != null) {
             throw new EmailException("Email ja existente");
         }
 
+        // Monta o objeto Usuario com a senha criptografada
         Usuario usuario = new Usuario();
         usuario.setNome(usuarioInserirDTO.getNome());
+        usuario.setSobrenome(usuarioInserirDTO.getSobrenome());
         usuario.setEmail(usuarioInserirDTO.getEmail());
         usuario.setSenha(encoder.encode(usuarioInserirDTO.getSenha()));
 
-        Set<UsuarioPerfil> usuarioPerfis = new HashSet<>();
-        for (Perfil perfil : usuarioInserirDTO.getPerfis()) {
-            perfil = perfilService.buscar(perfil.getId());
-            UsuarioPerfil usuarioPerfil = new UsuarioPerfil(usuario, perfil, LocalDate.now());
-            usuarioPerfis.add(usuarioPerfil);
-        }
-
-        usuario.setUsuarioPerfis(usuarioPerfis);
-
+        // Salva e retorna
         usuario = usuarioRepository.save(usuario);
-
-        UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
-        return usuarioDTO;
+        return new UsuarioDTO(usuario);
     }
 
     /* Referente ao follow de usuários */

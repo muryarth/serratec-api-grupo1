@@ -1,8 +1,6 @@
 package org.serratec.trabalho.grupo1.dto;
 
 import java.util.Date;
-
-
 import org.serratec.trabalho.grupo1.model.Usuario;
 
 public class UsuarioDTO {
@@ -10,10 +8,10 @@ public class UsuarioDTO {
 	 private long id_usuario;
 	 private String nome;
 	 private String sobrenome;
+	 private String senha;
 	 private String email;
 	 private Date dataNascimento;
-	 
-//	 private Set<Usuario> usuarios;
+	// private Set<Usuario> usuarios;
 
 	public UsuarioDTO() {
 	}
@@ -24,11 +22,12 @@ public class UsuarioDTO {
 		this.sobrenome = sobrenome;
 		this.email = email;
 		this.dataNascimento = dataNascimento;
-//		this.usuarios = new HashSet<>();
+		// this.usuarios = new HashSet<>();
 	}
 	
 	public UsuarioDTO(Usuario usuario) {
 		this.id_usuario = usuario.getId();
+		this.senha = usuario.getSenha();
 		this.nome = usuario.getNome();
 		this.sobrenome = usuario.getSobrenome();
 		this.email = usuario.getEmail();
@@ -74,14 +73,21 @@ public class UsuarioDTO {
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-	
-	
-//	public Set<Usuario> getUsuarios() {
-//		return usuarios;
-//	}
 
-//	public void setUsuarios(Set<Usuario> usuarios) {
-//		this.usuarios = usuarios;
-//	}
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	//	public Set<Usuario> getUsuarios() {
+	//		return usuarios;
+	//	}
+
+	//	public void setUsuarios(Set<Usuario> usuarios) {
+	//		this.usuarios = usuarios;
+	//	}
 
 }
