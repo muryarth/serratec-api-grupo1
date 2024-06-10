@@ -94,6 +94,7 @@ public class UsuarioService {
         usuario.setSobrenome(usuarioInserirDTO.getSobrenome());
         usuario.setEmail(usuarioInserirDTO.getEmail());
         usuario.setSenha(encoder.encode(usuarioInserirDTO.getSenha()));
+        usuario.setDataNascimento(usuarioInserirDTO.getDataNascimento());
 
         // Salva e retorna
         usuario = usuarioRepository.save(usuario);

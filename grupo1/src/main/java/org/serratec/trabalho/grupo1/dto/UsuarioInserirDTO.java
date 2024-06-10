@@ -1,5 +1,9 @@
 package org.serratec.trabalho.grupo1.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
+
 public class UsuarioInserirDTO {
 
 	private String nome;
@@ -12,7 +16,8 @@ public class UsuarioInserirDTO {
 
 	private String confirmaSenha;
 
-	//	private Set<Perfil> perfis;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dataNascimento;
 
 	public String getNome() {
 		return nome;
@@ -34,11 +39,7 @@ public class UsuarioInserirDTO {
 		return confirmaSenha;
 	}
 
-	/* public Set<Perfil> getPerfis() {
-		return perfis;
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
 	}
-
-	public void setPerfis(Set<Perfil> perfis) {
-		this.perfis = perfis;
-	} */
 }

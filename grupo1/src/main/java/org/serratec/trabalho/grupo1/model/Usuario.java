@@ -1,6 +1,7 @@
 package org.serratec.trabalho.grupo1.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -62,7 +63,7 @@ public class Usuario implements UserDetails, Serializable {
 
     @Column(name= "data_nascimento_usuario")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
     
     @OneToMany(mappedBy = "id.seguidor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Relacao> seguindo = new HashSet<>();
@@ -132,11 +133,11 @@ public class Usuario implements UserDetails, Serializable {
 		this.senha = senha;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 	
