@@ -44,7 +44,7 @@ public class UsuarioController {
 	
 	@PostMapping
     public ResponseEntity<UsuarioDTO> criar(@Valid @RequestBody UsuarioInserirDTO usuario) {
-        UsuarioDTO usuarioDTO = usuarioService.inserir(usuario);
+        UsuarioDTO usuarioDTO = usuarioService.save(usuario);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -55,13 +55,13 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario novoUsuario) {
-        UsuarioDTO usuarioDTO = usuarioService.update(id, novoUsuario);
+        UsuarioDTO usuarioDTO = usuarioService.updateById(id, novoUsuario);
         return ResponseEntity.ok(usuarioDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        usuarioService.deletar(id);
+        usuarioService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 

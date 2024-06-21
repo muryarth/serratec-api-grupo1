@@ -35,13 +35,13 @@ public class UsuarioService {
 
     public List<UsuarioDTO> findAll() {
         List<Usuario> usuarios = usuarioRepository.findAll();
-
         List<UsuarioDTO> usuarioDTO = new ArrayList<>();
 
         for (Usuario usuario : usuarios) {
             UsuarioDTO usuDTO = new UsuarioDTO(usuario);
             usuarioDTO.add(usuDTO);
         }
+
         return usuarioDTO;
     }
 
@@ -55,7 +55,7 @@ public class UsuarioService {
         return new UsuarioDTO(usuarioOpt.get());
     }
 
-    public UsuarioDTO update(Long id, Usuario novoUsuario) {
+    public UsuarioDTO updateById(Long id, Usuario novoUsuario) {
         Optional<Usuario> usuOPT = usuarioRepository.findById(id);
 
         if (usuOPT.isEmpty()) {
@@ -66,16 +66,16 @@ public class UsuarioService {
         return new UsuarioDTO(usuarioRepository.save(novoUsuario));
     }
 
-    public void deletar(Long id) throws NotFoundException {
+    public void deleteById(Long id) throws NotFoundException {
         Optional<Usuario> usuOPT = usuarioRepository.findById(id);
-        if (!usuOPT.isPresent()) {
+        if (usuOPT.isEmpty()) {
             throw new NotFoundException();
         }
         usuarioRepository.deleteById(id);
     }
 
     @Transactional
-    public UsuarioDTO inserir(UsuarioInserirDTO usuarioInserirDTO) throws EmailException, SenhaException {
+    public UsuarioDTO save(UsuarioInserirDTO usuarioInserirDTO) throws EmailException, SenhaException {
 
         // Confirma se a senha é igual
         if (!usuarioInserirDTO.getSenha().equalsIgnoreCase(usuarioInserirDTO.getConfirmaSenha())) {
@@ -97,19 +97,15 @@ public class UsuarioService {
         usuario.setDataNascimento(usuarioInserirDTO.getDataNascimento());
 
         // Salva e retorna
-        usuario = usuarioRepository.save(usuario);
-        return new UsuarioDTO(usuario);
+        return new UsuarioDTO(usuarioRepository.save(usuario));
     }
 
     /* Referente ao follow de usuários */
-
     public List<RelacaoDTO> findAllFollowersById(
             Long id, @PageableDefault(page = 0, size = 5) Pageable pageable)
             throws NotFoundException, NoContentException {
 
-        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
-
-        if (usuarioOpt.isPresent()) {
+        if (usuarioRepository.findById(id).isPresent()) {
             Page<Relacao> relacoes = relacaoRepository.findAllFollowersByUserId(id, pageable);
             List<RelacaoDTO> relacoesDTO = new ArrayList<>();
 
